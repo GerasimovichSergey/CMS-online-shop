@@ -2,7 +2,7 @@ import { tableGoods } from './elems.js';
 import { currencyFormatRUB } from './utils.js';
 
 
-const createRow = ({ id, title, category, price }) => {
+export const createRow = ({ id, title, category, price }) => {
   const tr = document.createElement('tr');
 
   tr.classList.add('table-row', 'table-goods-item');
@@ -26,7 +26,6 @@ const createRow = ({ id, title, category, price }) => {
 
 export const tableRender = (goods) => {
   tableGoods.textContent = '';
-
   const rows = goods.map(item => createRow(item));
 
   tableGoods.append(...rows);
