@@ -1,7 +1,7 @@
 import { category, form, tableGoods } from './elems.js';
-import { getCategory, getGoods, postGoods } from './serviceAPI.js';
+import { editGoods, getCategory, getGoods, postGoods } from './serviceAPI.js';
 import { toBase64 } from './utils.js';
-import { createRow } from './tableView.js';
+import { createRow, editRow } from './tableView.js';
 import { clearFormData, closeModal } from './modalController.js';
 import { showPreview } from './previewController.js';
 import { API_URL } from './const.js';
@@ -10,7 +10,6 @@ const updateCategory = async () => {
   category.textContent = '';
 
   const categoryList = await getCategory();
-
   const categoryOption = categoryList.map(optionValue => {
     const option = document.createElement('option');
     option.value = optionValue;
@@ -45,10 +44,17 @@ export const formController = () => {
       delete data.image;
     }
 
-    const goods = await postGoods(data);
-    tableGoods.append(createRow(goods));
+    if (data.imagesave) {
+      const goods = await editGoods(data);
+      editRow(goods);
+    } else {
+      const goods = await postGoods(data);
+      tableGoods.append(createRow(goods));
+    }
+
     closeModal();
     clearFormData(form);
+    updateCategory();
   });
 };
 
@@ -61,5 +67,6 @@ export const fillingForm = async (id) => {
   form.display.value = display;
   form.price.value = price;
   form.imagesave.value = image;
+  form.identificator.value = id;
   showPreview(`${API_URL}${image}`);
 };

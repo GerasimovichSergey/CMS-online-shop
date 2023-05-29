@@ -1,5 +1,5 @@
 import { tableRender } from './tableView.js';
-import { getGoods } from './serviceAPI.js';
+import { deleteGoods, getGoods } from './serviceAPI.js';
 import { modalController } from './modalController.js';
 import { tableGoods } from './elems.js';
 
@@ -13,6 +13,19 @@ export const tableController = async () => {
   });
 
   const goods = await getGoods();
-
   tableRender(goods);
+
+  tableGoods.addEventListener('click', async ({ target }) => {
+    const delBtn = target.closest('.btn-delete');
+
+    if (delBtn) {
+      const row = delBtn.closest('.table-goods-item');
+      const rowId = row.dataset.id;
+      const isDel = await deleteGoods(rowId);
+
+      if (isDel) {
+        row.remove();
+      }
+    }
+  });
 };

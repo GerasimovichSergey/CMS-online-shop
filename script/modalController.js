@@ -15,6 +15,8 @@ export const closeModal = () => {
 
 export const clearFormData = (form) => {
   form.reset();
+  form.identificator.value = '';
+  form.imagesave.value = '';
   hidePreview();
 };
 

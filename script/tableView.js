@@ -2,12 +2,8 @@ import { tableGoods } from './elems.js';
 import { currencyFormatRUB } from './utils.js';
 
 
-export const createRow = ({ id, title, category, price }) => {
-  const tr = document.createElement('tr');
-
-  tr.classList.add('table-row', 'table-goods-item');
-  tr.dataset.id = id;
-  tr.innerHTML = `
+const fillingRow = (goodsRow, { id, title, category, price }) => {
+  goodsRow.innerHTML = `
     <td>${id}</td>
     <td>${title}</td>
     <td>${category}</td>
@@ -21,7 +17,22 @@ export const createRow = ({ id, title, category, price }) => {
     </td>
   `;
 
-  return tr;
+  return goodsRow;
+};
+
+export const createRow = (data) => {
+  const tr = document.createElement('tr');
+
+  tr.classList.add('table-row', 'table-goods-item');
+  tr.dataset.id = data.id;
+
+  return fillingRow(tr, data);
+};
+
+export const editRow = (data) => {
+  const goodsRow = document.querySelector(`[data-id="${data.id}"]`);
+
+  fillingRow(goodsRow, data);
 };
 
 export const tableRender = (goods) => {
